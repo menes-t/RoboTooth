@@ -9,4 +9,10 @@
     <string name="bluetooth_permission_denied">Bluetooth permission denied.</string>
     <string name="on">Turned on.</string>
     <string name="already_on">Already on.</string>
+    <string name="bluetooth_couldnot_connect">Bluetooth could not connect to Sparki.</string>
+    <string name="camera_permission_available">Camera permission is available.</string>
+    <string name="camera_access_required">Camera access is required to communicate with Sparki.</string>
+    <string name="camera_unavailable"><b>Camera could not be opened.</b>\nThis occurs when the camera is not available.</string>
+    <string name="camera_permission_granted">Camera permission granted.</string>
+    <string name="camera_permission_denied">Camera permission denied.</string>
 </resources>

@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="robotooth.se.com.robotooth.Camera">
+    tools:context="robotooth.se.com.robotooth.CameraActivity"
+    android:id="@+id/camera_view_layout">
+
+    <org.opencv.android.JavaCameraView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        android:screenOrientation="landscape"
+        android:id="@+id/camera_view" />
 
 </android.support.constraint.ConstraintLayout>
