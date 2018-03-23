@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">RoboTooth</string>
+    <string name="bluetooth_permission_available">Bluetooth permission is available.</string>
+    <string name="bluetooth_access_required">Bluetooth access is required to communicate with Sparki.</string>
+    <string name="ok">OK</string>
+    <string name="bluetooth_device_list">Showing Paired Devices</string>
+    <string name="bluetooth_unavailable"><b>Bluetooth could not be opened.</b>\nThis occurs when the bluetooth is not available.</string>
+    <string name="bluetooth_permission_granted">Bluetooth permission granted.</string>
+    <string name="bluetooth_permission_denied">Bluetooth permission denied.</string>
+    <string name="on">Turned on.</string>
+    <string name="already_on">Already on.</string>
 </resources>
