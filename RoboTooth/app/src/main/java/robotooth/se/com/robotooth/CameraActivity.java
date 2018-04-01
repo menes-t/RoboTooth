@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -24,8 +23,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +42,8 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
     private float[] orientation = new float[4];
 
     private static long lastFoundAt;
+    private static long lastNotFoundAt;
+
     public static int screenOrien = 0; // 0 vertical 1 horizontal through left 2 horizontal through right
 
     List<MatOfPoint2f> points = new ArrayList<>();
@@ -172,11 +171,17 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         Mat image = inputFrame.rgba();
         //TODO
         List<Circle> circles = houghTransformCircle(image);
-        if(circles.size() != 0 && calculateTheTimePassed() > 3){
+
+        if(circles.size() != 0 && calculateTheTimePassed(lastFoundAt) > 15){
             MainActivity.writeCommand("f");
             lastFoundAt = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
-            Log.i(TAG,"Circle found and sent to Sparki");
+            Log.i(TAG,"XXX Circle found and sent to Sparki");
+        }else if(calculateTheTimePassed(lastNotFoundAt) > 1){
+            MainActivity.writeCommand("g");
+            lastNotFoundAt = TimeUnit.NANOSECONDS.toSeconds(System.nanoTime());
+            Log.i(TAG,"XXX Circle found and sent to Sparki");
         }
+
         for (Circle point :
                 circles) {
             drawCircle(point, image);
@@ -187,8 +192,8 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         Point center = new Point(c.getX(), c.getY());
         Imgproc.circle(image, center, (int) c.getRadius(), new Scalar(127, 255, 212), 3);
     }
-    private long calculateTheTimePassed(){
-        return TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - lastFoundAt);
+    private long calculateTheTimePassed(long fromWhen){
+        return TimeUnit.NANOSECONDS.toSeconds(System.nanoTime()) - fromWhen;
     }
     public static List<Circle> houghTransformCircle(Mat image){
 
@@ -197,8 +202,8 @@ public class CameraActivity extends Activity implements CameraBridgeViewBase.CvC
         Mat circles = new Mat();
         Mat tempMat = new Mat();
         Imgproc.cvtColor(image, tempMat, Imgproc.COLOR_RGB2GRAY);//Gray scale a gecis
-        Imgproc.HoughCircles(tempMat,circles,Imgproc.CV_HOUGH_GRADIENT,2,100,200,100,15,100);//burdaki sayi degerlerini ne boyutlarda circle tespit etmek istiyosaniz duzenlemeniz gerekir
-
+        Imgproc.HoughCircles(tempMat,circles,Imgproc.CV_HOUGH_GRADIENT,2,20,200,100,10,200);//burdaki sayi degerlerini ne boyutlarda circle tespit etmek istiyosaniz duzenlemeniz gerekir
+r0
         for (int x = 0; x < circles.cols(); x++) {//circlelari listeye atar
             Circle temp = new Circle(0,0,0);
             double[] c = circles.get(0, x);
